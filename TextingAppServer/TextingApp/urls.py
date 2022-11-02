@@ -5,4 +5,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('admin/v1/', include('djoser.urls')),
     path('admin/v1/', include('djoser.urls.authtoken')),
+    path('members/', include('django.contrib.auth.urls')),
+    path('members/', include('members.urls')),
 ]
