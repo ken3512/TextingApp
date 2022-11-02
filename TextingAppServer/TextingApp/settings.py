@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'members',
+    'drf_yasg',
     'djoser',
     'channels',
 ]
