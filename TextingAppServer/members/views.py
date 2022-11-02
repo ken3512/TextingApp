@@ -12,7 +12,9 @@ from drf_yasg import openapi
 @swagger_auto_schema()
 def login_user(request):
     if request.method != "POST":
-        return JsonResponse({'data': NULL, 'error': 'method not post'})
+        return JsonResponse({'error': 'method not post'})
+    elif 'username' not in request.data or 'password' not in request.data:
+        return JsonResponse({'error': 'body empty'})
     username = request.data['username']
     password = request.data['password']
     user = authenticate(request, username=username, password=password)
@@ -20,11 +22,11 @@ def login_user(request):
         data = login(request, user)
         return JsonResponse({'data': data, 'error': ''})
     else:
-        return JsonResponse({'data': NULL, 'error': 'User not valid'})
+        return JsonResponse({'error': 'User not valid'})
     
 @api_view(http_method_names=["POST"])
 @permission_classes([AllowAny])
 @swagger_auto_schema()
 def logout_user(request):
     logout(request)
-    return JsonResponse({'data': NULL, 'error': ''})
+    return JsonResponse({'error': ''})
