@@ -28,10 +28,12 @@ export default {
     },
     methods: {
         submitForm(e) {
+            this.messages = []
             const formData = {
                 username: this.username,
                 password: this.password,
                 re_password: this.re_password,
+                email: this.username,
             }
             
             if (formData.password === formData.re_password) {
@@ -48,7 +50,7 @@ export default {
                         }
                     })
             } else {
-                console.log("Password fields must match.")
+                this.messages.push("Password fields must match.")
             }
         }
     }

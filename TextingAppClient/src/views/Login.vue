@@ -25,6 +25,7 @@ export default {
     },
     methods: {
         submitForm(e) {
+            this.messages = []
             const formData = {
                 username: this.username,
                 password: this.password,

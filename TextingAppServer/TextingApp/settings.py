@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'channels',
 ]
 
+USER_CREATE_PASSWORD_RETYPE = True
+
 CORS_ALLOWED_ORGINS = [
     "http://localhost:8000"
 ]

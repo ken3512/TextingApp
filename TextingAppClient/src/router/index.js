@@ -8,7 +8,7 @@ const router = createRouter({
     {
       path: '/signup',
       name: 'Signup',
-      component: Signup
+      component: Signup,
     },
     {
       path: '/login',
@@ -18,15 +18,16 @@ const router = createRouter({
     {
       path: '/',
       name: 'Home',
-      component: () => import('../views/Home.vue')
+      component: () => import('../views/Home.vue'),
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (to.matched.some(record => record.meta.requiresAuth) && !this.$store.isAuthenticated) {
-      next({ name: 'Login' })
+    if (to.matched.some(record => record.meta.requiresAuth) && !this.$store.state.isAuthenticated) {
+      // next({ path: '/login' })
+      next()
     } else {
       next()
     }
