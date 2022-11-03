@@ -45,7 +45,13 @@ INSTALLED_APPS = [
     'channels',
 ]
 
-USER_CREATE_PASSWORD_RETYPE = True
+
+DJOSER = {
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "SEND_ACTIVATION_EMAIL": True,
+    "SEND_CONFIRMATION_EMAIL": True,
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+}
 
 CORS_ALLOWED_ORGINS = [
     "http://localhost:8000"
@@ -82,7 +88,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TextingApp.wsgi.application'
 ASGI_APPLICATION = 'TextingApp.asgi.application'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'TextAppVueDjango@gmail.com'
+EMAIL_HOST_PASSWORD = '87yhJ(8ygbnji*&UYhbnjki'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

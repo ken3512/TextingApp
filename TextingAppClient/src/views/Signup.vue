@@ -10,6 +10,7 @@
         <p v-for="message in messages">
             {{ message }}
         </p>
+        <button @:click="test()">resent email</button>
     </div>
 </template>
 
@@ -27,6 +28,16 @@ export default {
         }
     },
     methods: {
+        test() {
+            axios
+                .post('/api/v1/users/resend_activation', { email: this.email})
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
         submitForm(e) {
             this.messages = []
             const formData = {
@@ -36,22 +47,20 @@ export default {
                 email: this.username,
             }
             
-            if (formData.password === formData.re_password) {
-                axios
-                    .post('/api/v1/users/', formData)
-                    .then(response => {
-                        this.$router.push('/login')
-                    })
-                    .catch(error => {
-                        for (const [k, v] of Object.entries(error.response.data)) {
-                            for (let i = 0; i < v.length; i++) {
-                                this.messages.push(v[i])
-                            }
+            axios
+                .post('/api/v1/users/', formData)
+                .then(response => {
+                    this.$router.push('/login')
+                })
+                .catch(error => {
+                    for (const [k, v] of Object.entries(error.response.data)) {
+                        if(k !== 'password' && k !== 'username')
+                            continue
+                        for (let i = 0; i < v.length; i++) {
+                            this.messages.push(v[i])
                         }
-                    })
-            } else {
-                this.messages.push("Password fields must match.")
-            }
+                    }
+                })
         }
     }
 }
