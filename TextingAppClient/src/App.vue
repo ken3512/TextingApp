@@ -13,7 +13,6 @@ import HelloWorld from './components/HelloWorld.vue'
       <button v-else @:click="logout()">Login out</button>
     </div>
   </header>
-
   <RouterView />
 </template>
 

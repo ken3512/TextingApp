@@ -2,10 +2,13 @@
     <div class="login">
         <h1>Login</h1>
         <form @submit.prevent="submitForm">
-            <input type='email' name='username' v-model="username">
-            <input type='password' name='password' v-model="password">
+            <input placeholder="Enter Email" type='email' name='username' v-model="username">
+            <input placeholder="Enter Password" type='password' name='password' v-model="password">
             <button type="submit">Log in</button>
         </form>
+        <p v-for="message in messages">
+            {{ message }}
+        </p>
     </div>
 </template>
 
@@ -17,6 +20,7 @@ export default {
         return {
             username: '',
             password: '',
+            messages: [],
         }
     },
     methods: {
@@ -29,18 +33,17 @@ export default {
             axios
                 .post('/api/v1/token/login', formData)
                 .then(response => {
-                    console.log(response)
-
                     const token = response.data.auth_token
-
                     this.$store.commit('setToken', token)
-
                     axios.defaults.headers.common['Authorization'] = "Token " + token
-
                     localStorage.setItem("token", token)
                 })
                 .catch(error => {
-                    console.log(error)
+                    for (const [k, v] of Object.entries(error.response.data)) {
+                        for (let i = 0; i < v.length; i++) {
+                            this.messages.push(v[i])
+                        }
+                    }
                 })
         }
     }

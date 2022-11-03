@@ -2,11 +2,14 @@
     <div class="sign-up">
         <h1>Signup</h1>
         <form @submit.prevent="submitForm">
-            <input type='email' name='username' v-model="username" required>
-            <input type='password' name='password' v-model="password" required>
-            <input type='password' name='re_password' v-model="re_password" required>
+            <input  placeholder="Enter Email" type='email' name='username' v-model="username" required>
+            <input  placeholder="Enter Password" type='password' name='password' v-model="password" required>
+            <input  placeholder="Repeat Password" type='password' name='re_password' v-model="re_password" required>
             <button type="submit">Sign up</button>
         </form>
+        <p v-for="message in messages">
+            {{ message }}
+        </p>
     </div>
 </template>
 
@@ -20,6 +23,7 @@ export default {
             username: '',
             password: '',
             re_password: '',
+            messages: [],
         }
     },
     methods: {
@@ -35,10 +39,13 @@ export default {
                     .post('/api/v1/users/', formData)
                     .then(response => {
                         this.$router.push('/login')
-                        console.log(response)
                     })
                     .catch(error => {
-                        console.log(error.response.data.password)
+                        for (const [k, v] of Object.entries(error.response.data)) {
+                            for (let i = 0; i < v.length; i++) {
+                                this.messages.push(v[i])
+                            }
+                        }
                     })
             } else {
                 console.log("Password fields must match.")
