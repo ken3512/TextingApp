@@ -5,20 +5,62 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+      <nav v-if="!this.$store.state.isAuthenticated">
+        <RouterLink to="/signup">Sign up</RouterLink>
+        <RouterLink to="/login">Log in</RouterLink>
       </nav>
+      <button v-else @:click="logout()">Login out</button>
     </div>
   </header>
 
   <RouterView />
 </template>
+
+
+
+<script>
+import axios from 'axios'
+
+export default {
+  name: 'App',
+  mounted()
+  {
+    if (localStorage.getItem("token") !== null) {
+      const token = localStorage.getItem("token")
+      this.$store.commit('setToken', token)
+      axios.defaults.headers.common['Authorization'] = "Token " + token
+      axios
+        .get('/api/v1/users/me')
+        .then(response => {
+            console.log(response.data)
+        })
+        .catch(error => {
+            this.$store.commit('removeToken')
+            delete axios.defaults.headers.common["Authorization"]
+            localStorage.removeItem("token")
+        })
+    }
+  },
+  methods: {
+    logout() {
+      console.log(this.$store.state.isAuthenticated)
+        axios
+          .post('/api/v1/token/logout')
+          .then(response => {
+              this.$store.commit('removeToken')
+              delete axios.defaults.headers.common["Authorization"]
+              localStorage.removeItem("token")
+              console.log(response)
+          })
+          .catch(error => {
+              console.log(error)
+          })
+    }
+  }
+}
+</script>
+
 
 <style scoped>
 header {
