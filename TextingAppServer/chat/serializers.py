@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import Chat, Message
 
 class MessageSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(write_only = True)
     class Meta:
         model = Message
         fields = '__all__'
