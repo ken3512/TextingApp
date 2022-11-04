@@ -67,3 +67,30 @@ class ChatAPIView(APIView):
         chats = ChatSerializer(queryset, many=True)
         json_data = JSONRenderer().render(chats.data)
         return HttpResponse(json_data)
+
+@permission_classes([AllowAny])
+class AddUserAPIView(APIView):
+
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["chat_id", "user_id"],
+            properties={
+                "chat_id": openapi.Schema(
+                    title="Chat_id",
+                    type=openapi.TYPE_INTEGER,
+                ),
+                "user_id": openapi.Schema(
+                    title="User_id",
+                    type=openapi.TYPE_INTEGER,
+                ),
+            },
+        ),
+    )
+    def post(self, request):
+        chat_id = request.data["chat_id"]
+        user_id = request.data["user_id"]
+        chat = Chat.objects.get(id=chat_id)
+        chat.participants.add(user_id)
+        chat.save()
+        return HttpResponse()
