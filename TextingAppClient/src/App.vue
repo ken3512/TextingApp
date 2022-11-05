@@ -5,13 +5,30 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
-    <div class="wrapper">
-      <nav v-if="!this.$store.state.isAuthenticated">
-        <RouterLink to="/signup">Sign up</RouterLink>
-        <RouterLink to="/login">Log in</RouterLink>
+      <nav>
+        <h1 class="logo">
+          TextingApp
+        </h1>
+        <div v-if="!this.$store.state.isAuthenticated" class="buttons">
+          <input id="menu-toggle" type="checkbox"/>
+          <label class='menu-button-container' for="menu-toggle">
+            <div class='menu-button'></div>
+          </label>
+          <ul class="menu">
+                <li><RouterLink class="no-underline" id="about" to="/signup"><n-button quaternary size="large" id="about-button">Sign up</n-button></RouterLink></li>
+                <li><RouterLink class="no-underline" id="contact"  to="/login"><n-button quaternary size="large" id="contact-button">Login</n-button></RouterLink></li>
+          </ul>
+        </div>
+        <div v-else class="buttons">
+          <input id="menu-toggle" type="checkbox"/>
+          <label class='menu-button-container' for="menu-toggle">
+            <div class='menu-button'></div>
+          </label>
+          <ul class="menu">
+              <li><n-button @:click="logout()" quaternary size="large" id="about-button">Log out</n-button></li>
+          </ul>
+        </div>
       </nav>
-      <button v-else @:click="logout()">Login out</button>
-    </div>
   </header>
   <RouterView />
 </template>
@@ -43,14 +60,13 @@ export default {
   },
   methods: {
     logout() {
-      console.log(this.$store.state.isAuthenticated)
         axios
           .post('/api/v1/token/logout')
           .then(response => {
               this.$store.commit('removeToken')
               delete axios.defaults.headers.common["Authorization"]
               localStorage.removeItem("token")
-              console.log(response)
+              this.$router.push('/login')
           })
           .catch(error => {
               console.log(error)
@@ -61,66 +77,149 @@ export default {
 </script>
 
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<style lang="scss" scoped>
+  @import url(https://fonts.googleapis.com/css?family=Raleway);
+  .active-button{
+    background-color: #E6E0E0;
+    cursor: default;
+  }
+* {
+  box-sizing: border-box;
 }
-
-.logo {
+.no-underline{
+  text-decoration: none;
+}
+.menu {
+  z-index:10;
+  position:relative;
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.menu > li {
+  margin: 0 0.1rem;
+  overflow: hidden;
+}
+.menu-button-container {
+  display: none;
+  height: 100%;
+  width: 30px;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#menu-toggle {
+  display: none;
+}
+.menu-button,
+.menu-button::before,
+.menu-button::after {
   display: block;
-  margin: 0 auto 2rem;
+  background-color: #000000;
+  position: absolute;
+  height: 4px;
+  width: 30px;
+  transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 2px;
 }
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.menu-button::before {
+  content: '';
+  margin-top: -8px;
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.menu-button::after {
+  content: '';
+  margin-top: 8px;
 }
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+#menu-toggle:checked + .menu-button-container .menu-button::before {
+  margin-top: 0px;
+  transform: rotate(405deg);
 }
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+#menu-toggle:checked + .menu-button-container .menu-button {
+  background: rgba(255, 255, 255, 0);
 }
-
-nav a:first-of-type {
-  border: 0;
+#menu-toggle:checked + .menu-button-container .menu-button::after {
+  margin-top: 0px;
+  transform: rotate(-405deg);
 }
-
-@media (min-width: 1024px) {
-  header {
+@media (max-width: 660px) {
+  .menu-button-container {
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
   }
-
+  .menu {
+    position: absolute;
+    top: 0;
+    margin-top: 68px;
+    left: 0;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  #menu-toggle ~ .menu li {
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  #menu-toggle:checked ~ .menu li {
+    height: 3.5em;
+    padding: 0.4em;
+    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  #menu-toggle:checked ~ .menu .border {
+    border-bottom: 1px solid #000;
+  }
+  .menu > li {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0.5em 0;
+    width: 100%;
+    color: white;
+    background-color: rgb(248,241,241);
+  }
+  .menu > li:not(:last-child) {
+    border-bottom: 1px solid #444;
+  }
+}
+  #about{
+    text-decoration:none
+  }
+  #about-button{
+    text-decoration:none
+  }
+  .icons{
+    padding-top: 4px;
+    padding-left: 9px;
+  }
+  .icon{
+    width: 30px;
+  }
   .logo {
-    margin: 0 2rem 0 0;
+    justify-content: left;
+    padding-left: 30px;
   }
-
-  header .wrapper {
+  
+  nav{
+    background: rgb(248,241,241);
     display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+    width: 100%;
   }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+  .buttons {
+    justify-content: right;
+    padding: 15px;
+    display: flex;
+    width: 100%;
   }
-}
+  .nav_element
+  {
+    margin-right: 10px;
+    opacity: 1;
+    color: black;
+    text-decoration: none;
+  }
 </style>

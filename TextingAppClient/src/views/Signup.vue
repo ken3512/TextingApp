@@ -1,17 +1,31 @@
 <template>
-    <div class="sign-up">
-        <h1>Signup</h1>
-        <form @submit.prevent="submitForm">
-            <input  placeholder="Enter Email" type='email' name='username' v-model="username" required>
-            <input  placeholder="Enter Password" type='password' name='password' v-model="password" required>
-            <input  placeholder="Repeat Password" type='password' name='re_password' v-model="re_password" required>
-            <button type="submit">Sign up</button>
-        </form>
-        <p v-for="message in messages">
-            {{ message }}
-        </p>
-        <button @:click="test()">resent email</button>
-    </div>
+<div class="container">
+	<!-- code here -->
+	<div class="card">
+		<form class="card-form" @submit.prevent="submitForm">
+			<div class="input">
+                <input class="input-field" type='email' name='username' v-model="username" required>
+				<label class="input-label">Email</label>
+			</div>
+            <div class="input">
+                <input  class="input-field" type='password' name='password' v-model="password" required>
+				<label class="input-label">Password</label>
+			</div>
+            <div class="input">
+                <input class="input-field" type='password' name='re_password' v-model="re_password" required>
+				<label class="input-label">Confirm password</label>
+			</div>
+			<div class="action">
+				<button class="action-button" type="submit">Register</button>
+			</div>
+		</form>
+        <div class="messages">
+            <p v-for="message in messages">
+                {{ message }}
+            </p>
+        </div>
+	</div>
+</div>
 </template>
 
 <script>
@@ -53,8 +67,9 @@ export default {
                     this.$router.push('/login')
                 })
                 .catch(error => {
+                    console.log(error)
                     for (const [k, v] of Object.entries(error.response.data)) {
-                        if(k !== 'password' && k !== 'username')
+                        if(k !== 'password' && k !== 'username' && k !== 'non_field_errors')
                             continue
                         for (let i = 0; i < v.length; i++) {
                             this.messages.push(v[i])
@@ -65,6 +80,162 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .messages{
+        width: 92%;
+        margin: auto;
+    }
+
+    .sign-up{
+        text-align: center;
+        background-color: #F8F1F1;
+        margin: auto;
+        margin-top: 20px;
+        width: min(90%, 600px);
+        border-radius: 10px;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+*, *:after, *:before {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "DM Sans", sans-serif;
+	line-height: 1.5;
+	background-color: #f1f3fb;
+	padding: 0 2rem;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+
+// iOS Reset 
+input {
+	appearance: none;
+	border-radius: 0;
+}
+
+.card {
+	margin: 2rem auto;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 425px;
+	background-color: #FFF;
+	border-radius: 10px;
+	box-shadow: 0 10px 20px 0 rgba(#999, .25);
+	padding: .75rem;
+}
+
+.card-image {
+	border-radius: 8px;
+	overflow: hidden;
+	padding-bottom: 65%;
+	background-image: url('https://assets.codepen.io/285131/coffee_1.jpg');
+	background-repeat: no-repeat;
+	background-size: 150%;
+	background-position: 0 5%;
+	position: relative;
+}
+
+.card-heading {
+	position: absolute;
+	left: 10%;
+	top: 15%;
+	right: 10%;
+	font-size: 1.75rem;
+	font-weight: 700;
+	color: #735400;
+	line-height: 1.222;
+	small {
+		display: block;
+		font-size: .75em;
+		font-weight: 400;
+		margin-top: .25em;
+	}
+}
+
+.card-form {
+	padding: 2rem 1rem 0;
+}
+
+.input {
+	display: flex;
+	flex-direction: column-reverse;
+	position: relative;
+	padding-top: 1.5rem;
+	&+.input {
+		margin-top: 1.5rem;
+	}
+}
+
+.input-label {
+	color: #8597a3;
+	position: absolute;
+	top: 1.5rem;
+	transition: .25s ease;
+}
+
+.input-field {
+	border: 0;
+	z-index: 1;
+	background-color: transparent;
+	border-bottom: 2px solid #eee; 
+	font: inherit;
+	font-size: 1.125rem;
+	padding: .25rem 0;
+	&:focus, &:valid {
+		outline: 0;
+		border-bottom-color: #6658d3;
+		&+.input-label {
+			color: #6658d3;
+			transform: translateY(-1.5rem);
+		}
+	}
+}
+
+.action {
+	margin-top: 2rem;
+}
+
+.action-button {
+	font: inherit;
+	font-size: 1rem;
+	padding: 1em;
+	width: 100%;
+	font-weight: 500;
+	background-color: #6658d3;
+	border-radius: 6px;
+	color: #FFF;
+	border: 0;
+	&:focus {
+		outline: 0;
+	}
+}
+
+.card-info {
+	padding: 1rem 1rem;
+	text-align: center;
+	font-size: .875rem;
+	color: #8597a3;
+	a {
+		display: block;
+		color: #6658d3;
+		text-decoration: none;
+	}
+}
+
+
+
+
+
+</style>
 
 
 
