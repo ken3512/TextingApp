@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Chat, Message
+from .models import Chat, Message, Relationship
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,4 +9,9 @@ class MessageSerializer(serializers.ModelSerializer):
 class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
+        fields = '__all__'
+
+class RelationshipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Relationship
         fields = '__all__'

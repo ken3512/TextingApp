@@ -8,8 +8,8 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-from .serializers import ChatSerializer, MessageSerializer
-from .models import Chat, Message
+from .serializers import ChatSerializer, MessageSerializer, RelationshipSerializer
+from .models import Chat, Message, Relationship
 import datetime
 
 @permission_classes([AllowAny])
@@ -40,7 +40,7 @@ class MessageAIPView(APIView):
         queryset = Message.objects.filter(chat=chat_id)
         messages = MessageSerializer(queryset, many=True)
         json_data = JSONRenderer().render(messages.data)
-        return HttpResponse(json_data)
+        return HttpResponse(json_data, status=201)
 
 @permission_classes([AllowAny])
 class ChatAPIView(APIView):
@@ -66,7 +66,7 @@ class ChatAPIView(APIView):
         queryset = Chat.objects.filter(participants=user_id).order_by('-date_modified')
         chats = ChatSerializer(queryset, many=True)
         json_data = JSONRenderer().render(chats.data)
-        return HttpResponse(json_data)
+        return HttpResponse(json_data, status=201)
 
 @permission_classes([AllowAny])
 class AddUserAPIView(APIView):
@@ -93,4 +93,54 @@ class AddUserAPIView(APIView):
         chat = Chat.objects.get(id=chat_id)
         chat.participants.add(user_id)
         chat.save()
-        return HttpResponse()
+        return HttpResponse(status=201)
+
+
+
+@permission_classes([AllowAny])
+class RelationshipAPIView(APIView):
+
+    @swagger_auto_schema(
+        request_body=RelationshipSerializer,
+    )
+    def post(self, request):
+        data = JSONParser().parse(request)
+        serializer = RelationshipSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
+    @swagger_auto_schema(
+        manual_parameters=[
+             openapi.Parameter('user_to', openapi.IN_QUERY, description="", type=openapi.TYPE_INTEGER)
+        ]
+    )
+    def get(self, request):
+        user_to = request.query_params['user_to']
+        queryset = Relationship.objects.filter(user_to=user_to)
+        relationships = RelationshipSerializer(queryset, many=True)
+        json_data = JSONRenderer().render(relationships.data)
+        return HttpResponse(json_data, status=201)
+
+@permission_classes([AllowAny])
+class AddBackAPIView(APIView):
+
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["relationship_id"],
+            properties={
+                "relationship_id": openapi.Schema(
+                    title="relationship_id",
+                    type=openapi.TYPE_INTEGER,
+                ),
+            },
+        ),
+    )
+    def post(self, request):
+        relationship_id = request.data["relationship_id"]
+        relationship = Relationship.objects.get(id=relationship_id)
+        relationship.pending = False
+        relationship.save()
+        return HttpResponse(status=201)
