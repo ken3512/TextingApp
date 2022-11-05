@@ -1,7 +1,6 @@
 <template>
 
 <div class="container">
-	<!-- code here -->
 	<div class="card">
 		<form class="card-form" @submit.prevent="submitForm">
 			<div class="input">
@@ -68,7 +67,6 @@ export default {
 
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
-
 *, *:after, *:before {
 	box-sizing: border-box;
 }
@@ -93,15 +91,19 @@ input {
 }
 
 .card {
-	margin: 2rem auto;
+	margin: auto;
+    margin-top: 20px;
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	width: min(90%, 600px);
 	max-width: 425px;
 	background-color: #FFF;
 	border-radius: 10px;
 	box-shadow: 0 10px 20px 0 rgba(#999, .25);
 	padding: .75rem;
+    height: 400px;
+    text-align: center;
+
 }
 
 .card-image {
@@ -147,7 +149,7 @@ input {
 }
 
 .input-label {
-	color: #8597a3;
+	color: #243964;
 	position: absolute;
 	top: 1.5rem;
 	transition: .25s ease;
@@ -157,15 +159,15 @@ input {
 	border: 0;
 	z-index: 1;
 	background-color: transparent;
-	border-bottom: 2px solid #eee; 
+	border-bottom: 2px solid #243964; 
 	font: inherit;
 	font-size: 1.125rem;
 	padding: .25rem 0;
 	&:focus, &:valid {
 		outline: 0;
-		border-bottom-color: #6658d3;
+		border-bottom-color: #243964;
 		&+.input-label {
-			color: #6658d3;
+			color: #243964;
 			transform: translateY(-1.5rem);
 		}
 	}
@@ -181,7 +183,7 @@ input {
 	padding: 1em;
 	width: 100%;
 	font-weight: 500;
-	background-color: #6658d3;
+	background-color: #243964;
 	border-radius: 6px;
 	color: #FFF;
 	border: 0;
