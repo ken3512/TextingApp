@@ -1,11 +1,14 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import $ from 'jquery'
 </script>
 
+
 <template>
+
   <header>
-      <nav>
+      <nav v-if="this.$route.path !== '/activate'">
         <h1 class="logo">
           TextingApp
         </h1>
@@ -42,6 +45,8 @@ export default {
   name: 'App',
   mounted()
   {
+    // console.log(this.$cookies.get('csrftoken'))
+    axios.defaults.headers['X-CSRFToken'] = this.$cookies.get('csrftoken')
     if (localStorage.getItem("token") !== null) {
       const token = localStorage.getItem("token")
       this.$store.commit('setToken', token)
@@ -67,6 +72,17 @@ export default {
               delete axios.defaults.headers.common["Authorization"]
               localStorage.removeItem("token")
               this.$router.push('/login')
+          })
+          .catch(error => {
+              console.log(error)
+          })
+    },
+    get()
+    {
+      axios
+          .get('/api/v1/message?chat_id=1')
+          .then(response => {
+              console.log(response)
           })
           .catch(error => {
               console.log(error)
@@ -144,7 +160,7 @@ export default {
   margin-top: 0px;
   transform: rotate(-405deg);
 }
-@media (max-width: 660px) {
+@media (max-width: 0px) {
   .menu-button-container {
     display: flex;
   }

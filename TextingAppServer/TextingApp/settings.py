@@ -13,7 +13,8 @@ SECRET_KEY = 'django-insecure-)*c+q16w=2d=s=6*o#ht+%&a(x9z6)w46e_3-79k9%r%fm!9$6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['127.0.0.1']
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000', 'http://127.0.0.1:5173'
@@ -22,8 +23,10 @@ CORS_ALLOWED_ORIGINS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.AllowAny',
         'rest_framework.permissions.IsAuthenticated',
     )
 }
@@ -47,11 +50,17 @@ INSTALLED_APPS = [
 ]
 
 
+DOMAIN = 'localhost:5173'
+SITE_NAME = 'TextingApp'
+
 DJOSER = {
+    'PERMISSIONS': {
+    'activation': ['rest_framework.permissions.AllowAny'],
+    },
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SEND_ACTIVATION_EMAIL": True,
     "SEND_CONFIRMATION_EMAIL": True,
-    'ACTIVATION_URL': '/activate/{uid}/{token}',
+    'ACTIVATION_URL': 'activate?uid={uid}&token={token}',
 }
 
 CORS_ALLOWED_ORGINS = [

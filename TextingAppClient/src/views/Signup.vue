@@ -1,6 +1,5 @@
 <template>
 <div class="container">
-	<!-- code here -->
 	<div class="card">
 		<form class="card-form" @submit.prevent="submitForm">
 			<div class="input">
