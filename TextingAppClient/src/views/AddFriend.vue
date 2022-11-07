@@ -6,7 +6,16 @@
         <div class="users">
             <p v-for="u in users">
                 {{ u.username }}
-                    <n-button style="display: inline; float: right;" size="tiny" type="info" id="about-button" @:click="addFriend(u.id)">Friend</n-button>
+                    <n-button style="display: inline; float: right;" size="tiny" type="info" @:click="addFriend(u.id)">Friend</n-button>
+            </p>
+            <p v-for="r in requested">
+                {{ r.username }}
+                    <n-button style="display: inline; float: right; margin-left: 2px;" size="tiny" type="error" @:click="deleteRequest(r.id)">Delete</n-button>
+                    <n-button style="display: inline; float: right;" size="tiny" type="primary" @:click="confirmRequest(r.id)">Confirm</n-button>
+            </p>
+            <p v-for="s in sent">
+                {{ s.username }}
+                    <a style="display: inline; float: right;" type="info">Pending</a>
             </p>
         </div>
         <br>
@@ -23,9 +32,41 @@ export default {
         return {
             user: -1,
             users:[],
+            sent: [],
+            requested: [],
         }
     },
     methods: {
+        deleteRequest(id) {
+            const data = {
+                user_to: this.user,
+                user_from: id,
+            }
+
+            axios
+                .post('/api/v1/friend/', data)
+                .then(response => {
+                    this.updateUsers()
+                })
+                .catch(error => {
+
+                })
+        },
+        confirmRequest(id) {
+            const data = {
+                user_to: this.user,
+                user_from: id,
+            }
+
+            axios
+                .post('/api/v1/friend/', data)
+                .then(response => {
+                    this.updateUsers()
+                })
+                .catch(error => {
+
+                })
+        },
         updateUsers()
         {
             axios
@@ -36,15 +77,31 @@ export default {
                 .catch(error => {
                     console.log(error)
                 })
+            axios
+                .get('/api/v1/pending/sent?id=' + this.user)
+                .then(response => {
+                    this.sent = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            axios
+                .get('/api/v1/pending/requested?id=' + this.user)
+                .then(response => {
+                    this.requested = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         },
         addFriend(id) {
-            const formData = {
+            const data = {
                 user_from: this.user,
                 user_to: id,
             }
 
             axios
-                .post('/api/v1/friend/', formData)
+                .post('/api/v1/friend/', data)
                 .then(response => {
                     this.updateUsers()
                 })
@@ -58,14 +115,7 @@ export default {
             .get('/api/v1/users/me')
             .then(response => {
                 this.user = response.data.id
-                axios
-                    .get('/api/v1/all?id=' + this.user)
-                    .then(response => {
-                        this.users = response.data
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
+                this.updateUsers()
             })
             .catch(error => {
                 console.log(error)

@@ -163,3 +163,50 @@ class UsersAPIView(APIView):
         users = UserSerializer(querysetUsers, many=True)
         json_data = JSONRenderer().render(users.data)
         return HttpResponse(json_data, status=201)
+
+@permission_classes([AllowAny])
+class FriendsAPIView(APIView):
+
+    @swagger_auto_schema(
+        manual_parameters=[
+             openapi.Parameter('id', openapi.IN_QUERY, description="", type=openapi.TYPE_INTEGER)
+        ]
+    )
+    def get(self, request):
+        user_id = request.query_params['id']
+        query1 = User.objects.filter(is_active=True, user_to__user_from__id=user_id, user_to__pending=False).exclude(id=user_id)
+        query2 = User.objects.filter(is_active=True, user_from__user_to__id=user_id, user_from__pending=False).exclude(id=user_id)
+        querysetUsers = (query1 | query2).distinct()
+        users = UserSerializer(querysetUsers, many=True)
+        json_data = JSONRenderer().render(users.data)
+        return HttpResponse(json_data, status=201)
+
+@permission_classes([AllowAny])
+class PendingRequestAPIView(APIView):
+
+    @swagger_auto_schema(
+        manual_parameters=[
+             openapi.Parameter('id', openapi.IN_QUERY, description="", type=openapi.TYPE_INTEGER)
+        ]
+    )
+    def get(self, request):
+        user_id = request.query_params['id']
+        query = User.objects.filter(is_active=True, user_from__user_to__id=user_id, user_from__pending=True).exclude(id=user_id)
+        users = UserSerializer(query, many=True)
+        json_data = JSONRenderer().render(users.data)
+        return HttpResponse(json_data, status=201)
+
+@permission_classes([AllowAny])
+class PendingSentAPIView(APIView):
+
+    @swagger_auto_schema(
+        manual_parameters=[
+             openapi.Parameter('id', openapi.IN_QUERY, description="", type=openapi.TYPE_INTEGER)
+        ]
+    )
+    def get(self, request):
+        user_id = request.query_params['id']
+        query = User.objects.filter(is_active=True, user_to__user_from__id=user_id, user_to__pending=True).exclude(id=user_id)
+        users = UserSerializer(query, many=True)
+        json_data = JSONRenderer().render(users.data)
+        return HttpResponse(json_data, status=201)
