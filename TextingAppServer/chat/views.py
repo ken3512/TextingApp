@@ -148,10 +148,12 @@ class AddBackAPIView(APIView):
     def post(self, request):
         user_to = request.data["user_to"]
         user_from = request.data["user_from"]
-        relationship = Relationship.objects.filter(user_to=user_to, user_from=user_from)
-        print(relationship)
+        relationship = Relationship.objects.filter(user_to=user_to, user_from=user_from).update(pending=False)
         return HttpResponse(status=201)
-    
+
+
+@permission_classes([AllowAny])
+class rejectAPIView(APIView):
     @swagger_auto_schema(
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
@@ -168,12 +170,13 @@ class AddBackAPIView(APIView):
             },
         ),
     )
-    def delete(self, request):
-        print(request.DELETE["user_from"])
-        # user_to = request.data["user_to"]
-        # user_from = request.data["user_from"]
-        # relationship = Relationship.objects.filter(user_to=user_to, user_from=user_from).delete()
+    def post(self, request):
+        user_to = request.data["user_to"]
+        user_from = request.data["user_from"]
+        relationship = Relationship.objects.filter(user_to=user_to, user_from=user_from).delete()
         return HttpResponse(status=201)
+
+
 
 
 @permission_classes([AllowAny])

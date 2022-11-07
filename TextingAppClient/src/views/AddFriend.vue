@@ -44,9 +44,10 @@ export default {
             }
 
             axios
-                .delete('/api/v1/confirm/', data)
+                .post('/api/v1/delete/', data)
                 .then(response => {
                     this.updateUsers()
+                    console.log(response)
                 })
                 .catch(error => {
 

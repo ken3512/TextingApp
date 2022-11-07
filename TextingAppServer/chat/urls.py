@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import MessageAIPView, ChatAPIView, AddUserAPIView, RelationshipAPIView, AddBackAPIView, UsersAPIView, FriendsAPIView, PendingSentAPIView, PendingRequestAPIView
+from .views import MessageAIPView, ChatAPIView, AddUserAPIView, RelationshipAPIView, AddBackAPIView, UsersAPIView, FriendsAPIView, PendingSentAPIView, PendingRequestAPIView, rejectAPIView
 
 
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
     path('pending/sent', PendingSentAPIView.as_view()),
     path('pending/requested', PendingRequestAPIView.as_view()),
     path('confirm/', AddBackAPIView.as_view()),
+    path('delete/', rejectAPIView.as_view()),
 ]
