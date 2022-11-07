@@ -3,7 +3,7 @@
         <div v-for="chat in chats">
             <n-button @:click="get_chat(chat.id)" style="width:100%; margin-bottom: 10px;" size="large" id="about-button">{{ chat.title }}</n-button>
         </div>
-        <n-button style="width:100%; margin-bottom: 10px;" size="large" id="about-button">+</n-button>
+        <RouterLink class="no-underline" id="contact"  to="/add"><n-button style="width:100%; margin-bottom: 10px;" size="large" id="about-button">+</n-button></RouterLink>
     </div>
     <br>
 </template>

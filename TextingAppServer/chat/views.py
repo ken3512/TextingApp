@@ -147,3 +147,19 @@ class AddBackAPIView(APIView):
         relationship.pending = False
         relationship.save()
         return HttpResponse(status=201)
+
+
+@permission_classes([AllowAny])
+class UsersAPIView(APIView):
+
+    @swagger_auto_schema(
+        manual_parameters=[
+             openapi.Parameter('id', openapi.IN_QUERY, description="", type=openapi.TYPE_INTEGER)
+        ]
+    )
+    def get(self, request):
+        user_id = request.query_params['id']
+        querysetUsers = User.objects.filter(is_active=True).exclude(id=user_id).exclude(user_from__user_to__id=user_id).exclude(user_to__user_from__id=user_id)
+        users = UserSerializer(querysetUsers, many=True)
+        json_data = JSONRenderer().render(users.data)
+        return HttpResponse(json_data, status=201)

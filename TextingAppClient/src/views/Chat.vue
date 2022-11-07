@@ -94,7 +94,7 @@ export default {
         padding-bottom: 0px;
         text-align: left;
         background-color: #F8F1F1;
-        margin-bottom: 10px;
+        margin-bottom: 7px;
         margin-top: 5px;
         height: 85%;
         overflow-y:scroll;

@@ -4,6 +4,8 @@ import Signup from '../views/Signup.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Activate from '../views/Activate.vue'
+import AddFriend from '../views/AddFriend.vue'
+import AddChat from '../views/AddChat.vue'
 import Chat from '../views/Chat.vue'
 import store from '../store/index.js'
 
@@ -14,6 +16,16 @@ const router = createRouter({
       path: '/signup',
       name: 'Signup',
       component: Signup,
+    },
+    {
+      path: '/add_friend',
+      name: 'AddFriend',
+      component: AddFriend,
+    },
+    {
+      path: '/add',
+      name: 'AddChat',
+      component: AddChat,
     },
     {
       path: '/activate',
@@ -39,7 +51,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  let authRequired = ['/', '/chat']
+  let authRequired = ['/', '/chat', '/add']
   let unauthRequired = ['/login', '/signup']
   if (authRequired.includes(to.path) && !store.state.isAuthenticated) {
     next('/login')
