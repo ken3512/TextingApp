@@ -132,20 +132,47 @@ class AddBackAPIView(APIView):
     @swagger_auto_schema(
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
-            required=["relationship_id"],
+            required=["user_to", "user_from"],
             properties={
-                "relationship_id": openapi.Schema(
-                    title="relationship_id",
+                "user_to": openapi.Schema(
+                    title="user_to",
+                    type=openapi.TYPE_INTEGER,
+                ),
+                "user_from": openapi.Schema(
+                    title="user_from",
                     type=openapi.TYPE_INTEGER,
                 ),
             },
         ),
     )
     def post(self, request):
-        relationship_id = request.data["relationship_id"]
-        relationship = Relationship.objects.get(id=relationship_id)
-        relationship.pending = False
-        relationship.save()
+        user_to = request.data["user_to"]
+        user_from = request.data["user_from"]
+        relationship = Relationship.objects.filter(user_to=user_to, user_from=user_from)
+        print(relationship)
+        return HttpResponse(status=201)
+    
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["user_to", "user_from"],
+            properties={
+                "user_to": openapi.Schema(
+                    title="user_to",
+                    type=openapi.TYPE_INTEGER,
+                ),
+                "user_from": openapi.Schema(
+                    title="user_from",
+                    type=openapi.TYPE_INTEGER,
+                ),
+            },
+        ),
+    )
+    def delete(self, request):
+        print(request.DELETE["user_from"])
+        # user_to = request.data["user_to"]
+        # user_from = request.data["user_from"]
+        # relationship = Relationship.objects.filter(user_to=user_to, user_from=user_from).delete()
         return HttpResponse(status=201)
 
 

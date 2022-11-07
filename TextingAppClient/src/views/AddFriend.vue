@@ -44,7 +44,7 @@ export default {
             }
 
             axios
-                .post('/api/v1/friend/', data)
+                .delete('/api/v1/confirm/', data)
                 .then(response => {
                     this.updateUsers()
                 })
@@ -59,7 +59,7 @@ export default {
             }
 
             axios
-                .post('/api/v1/friend/', data)
+                .post('/api/v1/confirm/', data)
                 .then(response => {
                     this.updateUsers()
                 })

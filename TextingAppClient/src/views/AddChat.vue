@@ -74,18 +74,6 @@ export default {
                 delete axios.defaults.headers.common["Authorization"]
                 localStorage.removeItem("token")
             })
-    
-        axios
-            .get('/api/v1/all')
-            .then(response => {
-                for(var i = 0; i < response.data.length; i++) {
-                    if(response.data[i].id === this.user) continue
-                    this.options.push({label: response.data[i].username, value: response.data[i].id})
-                }
-            })
-            .catch(error => {
-                console.log(error)
-            })
     },
 }
 </script>
