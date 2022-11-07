@@ -4,6 +4,7 @@ import Signup from '../views/Signup.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Activate from '../views/Activate.vue'
+import Chat from '../views/Chat.vue'
 import store from '../store/index.js'
 
 const router = createRouter({
@@ -28,12 +29,17 @@ const router = createRouter({
       path: '/',
       name: 'Home',
       component: Home,
+    },
+    {
+      path: '/chat',
+      name: 'Chat',
+      component: Chat,
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  let authRequired = ['/']
+  let authRequired = ['/', '/chat']
   let unauthRequired = ['/login', '/signup']
   if (authRequired.includes(to.path) && !store.state.isAuthenticated) {
     next('/login')

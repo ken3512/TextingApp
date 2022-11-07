@@ -8,8 +8,9 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-from .serializers import ChatSerializer, MessageSerializer, RelationshipSerializer
+from .serializers import ChatSerializer, MessageSerializer, RelationshipSerializer, UserSerializer 
 from .models import Chat, Message, Relationship
+from django.contrib.auth.models import User
 import datetime
 
 @permission_classes([AllowAny])
@@ -37,9 +38,11 @@ class MessageAIPView(APIView):
     )
     def get(self, request):
         chat_id = request.query_params['chat_id']
-        queryset = Message.objects.filter(chat=chat_id)
-        messages = MessageSerializer(queryset, many=True)
-        json_data = JSONRenderer().render(messages.data)
+        querysetUsers = User.objects.filter(chats__id=chat_id)
+        querysetMessages = Message.objects.filter(chat=chat_id)
+        users = UserSerializer(querysetUsers, many=True)
+        messages = MessageSerializer(querysetMessages, many=True)
+        json_data = JSONRenderer().render({"messages": messages.data, "users": users.data})
         return HttpResponse(json_data, status=201)
 
 @permission_classes([AllowAny])

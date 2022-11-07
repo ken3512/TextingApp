@@ -1,8 +1,9 @@
 <template>
     <div class="home">
         <div v-for="chat in chats">
-            <n-button  style="width:100%; margin-bottom: 10px; background-color: #243964;" type="info">{{ chat.title }}</n-button>
+            <n-button @:click="get_chat(chat.id)" style="width:100%; margin-bottom: 10px;" size="large" id="about-button">{{ chat.title }}</n-button>
         </div>
+        <n-button style="width:100%; margin-bottom: 10px;" size="large" id="about-button">+</n-button>
     </div>
     <br>
 </template>
@@ -11,80 +12,42 @@
 import axios from 'axios'
 
 export default {
-  name: 'Home',
-  data() {
+    name: 'Home',
+    data() {
         return {
-            chats: [
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-                {title: "bruh"},
-            ],
+            chats: [],
         }
     },
-  mounted()
-  {
-    if (localStorage.getItem("token") !== null) {
-      const token = localStorage.getItem("token")
-      this.$store.commit('setToken', token)
-      axios.defaults.headers.common['Authorization'] = "Token " + token
-      if (localStorage.getItem("token") !== null) {
-      const token = localStorage.getItem("token")
-      this.$store.commit('setToken', token)
-      axios.defaults.headers.common['Authorization'] = "Token " + token
-      axios
-        .get('/api/v1/users/me')
-        .then(response => {
-            axios
-                .get('/api/v1/chat?user_id=' + response.data.id)
-                .then(res => {
-                    // this.chats = res.data
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        })
-        .catch(error => {
-            this.$store.commit('removeToken')
-            delete axios.defaults.headers.common["Authorization"]
-            localStorage.removeItem("token")
-        })
-    }
-    }
-  },
-  methods: {
-    get_chats() {
-        axios
-          .post('/api/v1/token/logout')
-          .then(response => {
-              this.$store.commit('removeToken')
-              delete axios.defaults.headers.common["Authorization"]
-              localStorage.removeItem("token")
-              this.$router.push('/login')
-          })
-          .catch(error => {
-              console.log(error)
-          })
+    methods: {
+        get_chat(chat_id) {
+            console.log(chat_id)
+            this.$router.push('/chat?id=' + chat_id)
+        }
     },
-  }
+    mounted() {
+        if (localStorage.getItem("token") !== null) {
+            const token = localStorage.getItem("token")
+            this.$store.commit('setToken', token)
+            axios.defaults.headers.common['Authorization'] = "Token " + token
+            axios
+                .get('/api/v1/users/me')
+                .then(response => {
+                    axios
+                        .get('/api/v1/chat?user_id=' + response.data.id)
+                        .then(res => {
+                            this.chats = res.data
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        })
+                })
+                .catch(error => {
+                    this.$store.commit('removeToken')
+                    delete axios.defaults.headers.common["Authorization"]
+                    localStorage.removeItem("token")
+                })
+        }
+    },
 }
 </script>
 
