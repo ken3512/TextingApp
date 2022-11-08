@@ -4,8 +4,18 @@
             <RouterLink style="margin-top: 10px;" class="no-underline" id="about" to="/"><n-button size="tiny" type="info" id="about-button">Back</n-button></RouterLink>
         </div>
         <div class="messages">
-            <div v-for="message in messages">
-               {{ usertags[message.user] }} {{ message.text }} {{ message.created }}
+            <div v-for="message in messages" >
+                <div v-if="message.user != user">
+                <a style="font-size: 12px;">{{ usertags[message.user] }}</a>
+                    <div style="background-color: #2080F0; color: white; padding: 4px; width: fit-content; border-radius: 7px; margin-bottom: 5px;">
+                {{ message.text }}
+                    </div>
+                </div>
+                <div v-else style="">
+                    <div style="background-color: #E4E6EB; color: black; padding: 4px; width: fit-content; border-radius: 7px; margin-bottom: 5px; margin-left: auto; margin-right: 0;">
+                {{ message.text }}
+                    </div>
+                </div>
             </div>
         </div>
             <input type='textfield' style="width: 70%;" name='message' v-model="message" required>
