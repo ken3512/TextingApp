@@ -6,7 +6,6 @@ import $ from 'jquery'
 
 
 <template>
-
   <header>
       <nav v-if="this.$route.path !== '/activate'">
         <h1 class="logo">
@@ -28,7 +27,7 @@ import $ from 'jquery'
             <div class='menu-button'></div>
           </label>
           <ul class="menu">
-                <li><RouterLink class="no-underline" id="contact"  to="/add_friend"><n-button quaternary size="large" id="contact-button">Add Friend</n-button></RouterLink></li>
+                <li><RouterLink class="no-underline" id="contact"  to="/add_friend"><n-button quaternary size="large" id="contact-button">Friends</n-button></RouterLink></li>
               <li><n-button @:click="logout()" quaternary size="large" id="about-button">Log out</n-button></li>
           </ul>
         </div>

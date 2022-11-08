@@ -4,15 +4,23 @@
             <RouterLink style="margin-top: 10px;" class="no-underline" id="about" to="/"><n-button size="tiny" type="info" id="about-button">Back</n-button></RouterLink>
         </div>
         <div class="users">
+            <h3 v-if="friends.length > 0">Friends:</h3>
+            <p v-for="f in friends">
+                {{ f.username }}
+                <n-button style="display: inline; float: right; margin-left: 2px;" size="tiny" type="error" @:click="deleteRequest(f.id)">Unfriend</n-button>
+            </p>
+            <h3 v-if="users.length > 0">Make a friend:</h3>
             <p v-for="u in users">
                 {{ u.username }}
                     <n-button style="display: inline; float: right;" size="tiny" type="info" @:click="addFriend(u.id)">Friend</n-button>
             </p>
+            <h3 v-if="requested.length > 0">Sent to you:</h3>
             <p v-for="r in requested">
                 {{ r.username }}
                     <n-button style="display: inline; float: right; margin-left: 2px;" size="tiny" type="error" @:click="deleteRequest(r.id)">Delete</n-button>
                     <n-button style="display: inline; float: right;" size="tiny" type="primary" @:click="confirmRequest(r.id)">Confirm</n-button>
             </p>
+            <h3 v-if="sent.length > 0" >Pending Requests:</h3>
             <p v-for="s in sent">
                 {{ s.username }}
                     <a style="display: inline; float: right;" type="info">Pending</a>
@@ -33,6 +41,7 @@ export default {
             user: -1,
             users:[],
             sent: [],
+            friends: [],
             requested: [],
         }
     },
@@ -70,6 +79,14 @@ export default {
         },
         updateUsers()
         {
+            axios
+                .get('/api/v1/friends?id=' + this.user)
+                .then(response => {
+                    this.friends = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
             axios
                 .get('/api/v1/all?id=' + this.user)
                 .then(response => {

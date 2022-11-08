@@ -58,7 +58,7 @@ SITE_NAME = 'TextingApp'
 
 DJOSER = {
     'PERMISSIONS': {
-    'activation': ['rest_framework.permissions.AllowAny'],
+        'activation': ['rest_framework.permissions.AllowAny'],
     },
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SEND_ACTIVATION_EMAIL": True,
