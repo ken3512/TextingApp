@@ -1,4 +1,9 @@
 from pathlib import Path
+import environ
+
+env = environ.Env()
+# reading .env file
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)*c+q16w=2d=s=6*o#ht+%&a(x9z6)w46e_3-79k9%r%fm!9$6'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -101,7 +106,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'textappvuedjango@gmail.com'
-EMAIL_HOST_PASSWORD = 'huvblsnufucrsbvt'
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
