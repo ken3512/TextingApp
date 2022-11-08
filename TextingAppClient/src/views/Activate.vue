@@ -34,7 +34,7 @@ export default {
             token: token,
         }
         axios
-        .post('/api/v1/users/activation', data)
+        .post('/api/v1/users/activation/', data)
         .then(response => {
             console.log(response)
         })

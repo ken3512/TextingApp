@@ -3,7 +3,11 @@
 	<div class="card">
 		<form class="card-form" @submit.prevent="submitForm">
 			<div class="input">
-                <input class="input-field" type='email' name='username' v-model="username" required>
+                <input class="input-field" type='name' name='username' v-model="username" required>
+				<label class="input-label">Username</label>
+			</div>
+			<div class="input">
+                <input class="input-field" type='email' name='email' v-model="email" required>
 				<label class="input-label">Email</label>
 			</div>
             <div class="input">
@@ -35,6 +39,7 @@ export default {
     data() {
         return {
             username: '',
+            email: '',
             password: '',
             re_password: '',
             messages: [],
@@ -55,11 +60,12 @@ export default {
             this.messages = []
             const formData = {
                 username: this.username,
+                email: this.email,
                 password: this.password,
                 re_password: this.re_password,
-                email: this.username,
             }
-            
+			console.log(formData)
+
             axios
                 .post('/api/v1/users/', formData)
                 .then(response => {
@@ -117,7 +123,7 @@ input {
 	border-radius: 10px;
 	box-shadow: 0 10px 20px 0 rgba(#999, .25);
 	padding: .75rem;
-    height: 500px;
+    height: 570px;
     text-align: center;
 
 }

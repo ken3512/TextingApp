@@ -4,7 +4,7 @@
 	<div class="card">
 		<form class="card-form" @submit.prevent="submitForm">
 			<div class="input">
-                <input class="input-field" type='email' name='username' v-model="username" required>
+                <input class="input-field" type='text' name='username' v-model="username" required>
 				<label class="input-label">Email</label>
 			</div>
             <div class="input">

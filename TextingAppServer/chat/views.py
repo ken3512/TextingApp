@@ -13,7 +13,6 @@ from .models import Chat, Message, Relationship
 from django.contrib.auth.models import User
 import datetime
 
-@permission_classes([AllowAny])
 class MessageAIPView(APIView):
 
     @swagger_auto_schema(
@@ -45,7 +44,6 @@ class MessageAIPView(APIView):
         json_data = JSONRenderer().render({"messages": messages.data, "users": users.data})
         return HttpResponse(json_data, status=201)
 
-@permission_classes([AllowAny])
 class ChatAPIView(APIView):
 
     @swagger_auto_schema(
@@ -71,7 +69,6 @@ class ChatAPIView(APIView):
         json_data = JSONRenderer().render(chats.data)
         return HttpResponse(json_data, status=201)
 
-@permission_classes([AllowAny])
 class AddUserAPIView(APIView):
 
     @swagger_auto_schema(
@@ -100,7 +97,6 @@ class AddUserAPIView(APIView):
 
 
 
-@permission_classes([AllowAny])
 class RelationshipAPIView(APIView):
 
     @swagger_auto_schema(
@@ -126,7 +122,6 @@ class RelationshipAPIView(APIView):
         json_data = JSONRenderer().render(relationships.data)
         return HttpResponse(json_data, status=201)
 
-@permission_classes([AllowAny])
 class AddBackAPIView(APIView):
 
     @swagger_auto_schema(
@@ -152,7 +147,6 @@ class AddBackAPIView(APIView):
         return HttpResponse(status=201)
 
 
-@permission_classes([AllowAny])
 class rejectAPIView(APIView):
     @swagger_auto_schema(
         request_body=openapi.Schema(
@@ -179,7 +173,6 @@ class rejectAPIView(APIView):
 
 
 
-@permission_classes([AllowAny])
 class UsersAPIView(APIView):
 
     @swagger_auto_schema(
@@ -194,7 +187,6 @@ class UsersAPIView(APIView):
         json_data = JSONRenderer().render(users.data)
         return HttpResponse(json_data, status=201)
 
-@permission_classes([AllowAny])
 class FriendsAPIView(APIView):
 
     @swagger_auto_schema(
@@ -211,7 +203,6 @@ class FriendsAPIView(APIView):
         json_data = JSONRenderer().render(users.data)
         return HttpResponse(json_data, status=201)
 
-@permission_classes([AllowAny])
 class PendingRequestAPIView(APIView):
 
     @swagger_auto_schema(
@@ -226,7 +217,6 @@ class PendingRequestAPIView(APIView):
         json_data = JSONRenderer().render(users.data)
         return HttpResponse(json_data, status=201)
 
-@permission_classes([AllowAny])
 class PendingSentAPIView(APIView):
 
     @swagger_auto_schema(

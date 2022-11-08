@@ -51,7 +51,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  let authRequired = ['/', '/chat', '/add']
+  let authRequired = ['/', '/chat', '/add', '/add_friend']
   let unauthRequired = ['/login', '/signup']
   if (authRequired.includes(to.path) && !store.state.isAuthenticated) {
     next('/login')
