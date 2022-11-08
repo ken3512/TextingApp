@@ -93,6 +93,11 @@ export default {
 }
 </script>
 
+<style>
+.no-underline{
+  text-decoration: none;
+}
+</style>
 
 <style lang="scss" scoped>
   @import url(https://fonts.googleapis.com/css?family=Raleway);

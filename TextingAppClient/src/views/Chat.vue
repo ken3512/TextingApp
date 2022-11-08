@@ -99,6 +99,9 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.no-underline{
+  text-decoration: none;
+}
     .messages  {
         padding: 10px;
         padding-bottom: 0px;
