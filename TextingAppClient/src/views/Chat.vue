@@ -1,7 +1,17 @@
 <template>
     <div class="chat">
-        <div style="width: 100%; text-align: left; margin: 10px;">
-            <RouterLink style="margin-top: 10px;" class="no-underline" id="about" to="/"><n-button size="tiny" type="info" id="about-button">Back</n-button></RouterLink>
+        <div style="display: flex; text-align: left; margin: 10px;">
+                <div style="background-color: black; width: fit-content">
+                    <RouterLink style="margin-top: 10px;" class="no-underline" id="about" to="/"><n-button size="tiny" type="info" id="about-button">Back</n-button></RouterLink>
+                </div>
+                <div style=" width: fit-content; border-radius: 7px; margin-left: auto; margin-right: 0;">
+                    <n-dropdown trigger="click" :options="add" @select="add_part">
+                        <n-button size="tiny" type="primary">Add</n-button>
+                    </n-dropdown>
+                    <n-dropdown  trigger="click" :options="participants" @select="handleSelect">
+                        <n-button style="margin-left: 10px;" size="tiny" type="info">Participants</n-button>
+                    </n-dropdown>
+                </div>
         </div>
         <div class="messages">
             <div v-for="message in messages" >
@@ -11,7 +21,7 @@
                 {{ message.text }}
                     </div>
                 </div>
-                <div v-else style="">
+                <div v-else>
                     <div style="background-color: #E4E6EB; color: black; padding: 4px; width: fit-content; border-radius: 7px; margin-bottom: 5px; margin-left: auto; margin-right: 0;">
                 {{ message.text }}
                     </div>
@@ -27,16 +37,29 @@
 
 <script>
 import axios from 'axios'
+import router from '../router/index.js'
 
 export default {
     name: 'Chat',
     data() {
         return {
             messages: [],
+            add: [],
             message: '',
             usertags: {},
+            participants: [],
             chat: -1,
             user: -1,
+            add_part(key)
+            {
+                let ids = key.split(',')
+                const formData = {
+                    chat_id: parseInt(ids[1]),
+                    user_id: parseInt(ids[0]),
+                }
+                axios
+                    .post('/api/v1/add/', formData)
+            },
         }
     },
     mounted()
@@ -45,22 +68,13 @@ export default {
             .get('/api/v1/users/me')
             .then(response => {
                 this.user = response.data.id
+                this.chat = this.$route.query.id 
+                this.updateMessages()
             })
             .catch(error => {
                 this.$store.commit('removeToken')
                 delete axios.defaults.headers.common["Authorization"]
                 localStorage.removeItem("token")
-            })
-        this.chat = this.$route.query.id 
-        axios
-            .get('/api/v1/message?chat_id=' + this.chat)
-            .then(response => {
-                this.messages = response.data.messages
-                for(var i = 0; i < response.data.users.length; i++)
-                    this.usertags[response.data.users[i].id] = response.data.users[i].username
-            })
-            .catch(error => {
-                console.log(error)
             })
     },
     methods: {
@@ -69,8 +83,22 @@ export default {
                 .get('/api/v1/message?chat_id=' + this.chat)
                 .then(response => {
                     this.messages = response.data.messages
-                    for(var i = 0; i < response.data.users.length; i++)
+                    for(var i = 0; i < response.data.users.length; i++) {
+                        if(response.data.users[i].id === this.user) continue
                         this.usertags[response.data.users[i].id] = response.data.users[i].username
+                        this.participants.push({label: response.data.users[i].username, key: response.data.users[i].id});
+                    }
+                    axios
+                        .get('/api/v1/friends/?id=' + this.user)
+                        .then(response => {
+                            for(var i = 0; i < response.data.length; i++) {
+                                if(response.data[i].id === this.user || this.usertags[response.data[i].id]) continue
+                                this.add.push({label: response.data[i].username, key: response.data[i].id + "," + this.chat})
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
                 })
                 .catch(error => {
                     console.log(error)
