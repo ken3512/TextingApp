@@ -6,11 +6,17 @@
                 </div>
                 <div style=" width: fit-content; border-radius: 7px; margin-left: auto; margin-right: 0;">
                     <n-dropdown v-if="add.length > 0" trigger="click" :options="add" @select="add_part">
-                        <n-button size="tiny" type="primary">Add</n-button>
+                        <n-button style="margin-left: 10px;"  size="tiny" type="primary">Add</n-button>
                     </n-dropdown>
-                    <n-dropdown  trigger="click" :options="participants" @select="handleSelect">
+                    <n-dropdown  v-if="participants.length > 0" trigger="click" :options="participants" @select="handleSelect">
                         <n-button style="margin-left: 10px;" size="tiny" type="info">Participants</n-button>
                     </n-dropdown>
+                    <n-popconfirm  :negative-text="null" @positive-click="deleteChat(chat)">
+                    <template #trigger>
+                        <n-button style="margin-left: 10px;" size="tiny" type="error">Delete chat</n-button>
+                    </template>
+                    Are you want to delete this chat?
+                    </n-popconfirm>
                 </div>
         </div>
         <div class="messages">
@@ -83,6 +89,17 @@ export default {
                     .catch(error => {
 
                     })
+        },
+        deleteChat(id)
+        {
+            axios
+                .delete('/api/v1/chat?chat_id=' + this.chat)
+                .then(response => {
+                    this.$router.push('/')
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         },
         updateMessages() {
             this.participants = []

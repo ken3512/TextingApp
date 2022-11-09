@@ -7,7 +7,13 @@
             <h3 v-if="friends.length > 0">Friends:</h3>
             <p v-for="f in friends">
                 {{ f.username }}
-                <n-button style="display: inline; float: right; margin-left: 2px;" size="tiny" type="error" @:click="deleteRequest(f.id)">Unfriend</n-button>
+                <!-- <n-button style="display: inline; float: right; margin-left: 2px;" size="tiny" type="error" @:click="deleteRequest(f.id)">Unfriend</n-button> -->
+                <n-popconfirm :negative-text="null" @positive-click="deleteRequest(f.id)">
+                <template #trigger>
+                    <n-button style="display: inline; float: right; margin-left: 2px;" size="tiny" type="error">Unfriend</n-button>
+                </template>
+                Are you sure you want to unfriend {{ f.username }}?
+                </n-popconfirm>
             </p>
             <h3 v-if="users.length > 0">Make a friend:</h3>
             <p v-for="u in users">

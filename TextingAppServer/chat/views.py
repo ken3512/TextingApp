@@ -44,7 +44,6 @@ class MessageAIPView(APIView):
         json_data = JSONRenderer().render({"messages": messages.data, "users": users.data})
         return HttpResponse(json_data, status=201)
 
-@permission_classes([AllowAny])
 class ChatAPIView(APIView):
 
     @swagger_auto_schema(
@@ -53,6 +52,9 @@ class ChatAPIView(APIView):
         ]
     )
     def delete(self, request):
+        chat_id = request.query_params['chat_id']
+        instance = Chat.objects.get(id=chat_id)
+        instance.delete()
         return HttpResponse(status=201)
 
     @swagger_auto_schema(
