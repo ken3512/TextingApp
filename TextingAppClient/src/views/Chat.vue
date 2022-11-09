@@ -5,7 +5,7 @@
                     <RouterLink style="margin-top: 10px;" class="no-underline" id="about" to="/"><n-button size="tiny" type="info" id="about-button">Back</n-button></RouterLink>
                 </div>
                 <div style=" width: fit-content; border-radius: 7px; margin-left: auto; margin-right: 0;">
-                    <n-dropdown trigger="click" :options="add" @select="add_part">
+                    <n-dropdown v-if="add.length > 0" trigger="click" :options="add" @select="add_part">
                         <n-button size="tiny" type="primary">Add</n-button>
                     </n-dropdown>
                     <n-dropdown  trigger="click" :options="participants" @select="handleSelect">
@@ -50,16 +50,6 @@ export default {
             participants: [],
             chat: -1,
             user: -1,
-            add_part(key)
-            {
-                let ids = key.split(',')
-                const formData = {
-                    chat_id: parseInt(ids[1]),
-                    user_id: parseInt(ids[0]),
-                }
-                axios
-                    .post('/api/v1/add/', formData)
-            },
         }
     },
     mounted()
@@ -78,7 +68,25 @@ export default {
             })
     },
     methods: {
+        add_part(key)
+        {
+                let ids = key.split(',')
+                const formData = {
+                    chat_id: parseInt(ids[1]),
+                    user_id: parseInt(ids[0]),
+                }
+                axios
+                    .post('/api/v1/add/', formData)
+                    .then(response => {
+                        this.updateMessages()
+                    })
+                    .catch(error => {
+
+                    })
+        },
         updateMessages() {
+            this.participants = []
+            this.add = [];
             axios
                 .get('/api/v1/message?chat_id=' + this.chat)
                 .then(response => {

@@ -44,7 +44,16 @@ class MessageAIPView(APIView):
         json_data = JSONRenderer().render({"messages": messages.data, "users": users.data})
         return HttpResponse(json_data, status=201)
 
+@permission_classes([AllowAny])
 class ChatAPIView(APIView):
+
+    @swagger_auto_schema(
+        manual_parameters=[
+             openapi.Parameter('chat_id', openapi.IN_QUERY, description="", type=openapi.TYPE_INTEGER)
+        ]
+    )
+    def delete(self, request):
+        return HttpResponse(status=201)
 
     @swagger_auto_schema(
         request_body=ChatSerializer,
