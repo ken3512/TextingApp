@@ -22,7 +22,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000', 'http://127.0.0.1:5173'
+    'http://localhost:8000', 'http://localhost:5173'
 ]
 
 REST_FRAMEWORK = {
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 ]
 
 
-DOMAIN = '127.0.0.1:5173'
+DOMAIN = 'localhost:5173'
 SITE_NAME = 'TextingApp'
 
 DJOSER = {
