@@ -6,11 +6,9 @@ import $ from 'jquery'
 
 
 <template>
+  <div class="app">
   <header>
       <nav v-if="this.$route.path !== '/activate'">
-        <h1 class="logo">
-          TextingApp
-        </h1>
         <div v-if="!this.$store.state.isAuthenticated" class="buttons">
           <input id="menu-toggle" type="checkbox"/>
           <label class='menu-button-container' for="menu-toggle">
@@ -34,6 +32,7 @@ import $ from 'jquery'
       </nav>
   </header>
   <RouterView />
+</div>
 </template>
 
 
@@ -107,6 +106,19 @@ export default {
 * {
   box-sizing: border-box;
 }
+
+  .app{
+        text-align: center;
+        background-color: #F8F1F1;
+        margin: auto;
+        margin-top: 20px;
+        width: min(90%, 600px);
+        height: 500px;
+        border-radius: 10px;
+    }
+
+    
+
 .no-underline{
   text-decoration: none;
 }
@@ -165,48 +177,7 @@ export default {
   margin-top: 0px;
   transform: rotate(-405deg);
 }
-@media (max-width: 0px) {
-  .menu-button-container {
-    display: flex;
-  }
-  .menu {
-    position: absolute;
-    top: 0;
-    margin-top: 68px;
-    left: 0;
-    flex-direction: column;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-  }
-  #menu-toggle ~ .menu li {
-    height: 0;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  #menu-toggle:checked ~ .menu li {
-    height: 3.5em;
-    padding: 0.4em;
-    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  #menu-toggle:checked ~ .menu .border {
-    border-bottom: 1px solid #000;
-  }
-  .menu > li {
-    display: flex;
-    justify-content: center;
-    margin: 0;
-    padding: 0.5em 0;
-    width: 100%;
-    color: white;
-    background-color: rgb(248,241,241);
-  }
-  .menu > li:not(:last-child) {
-    border-bottom: 1px solid #444;
-  }
-}
+
   #about{
     text-decoration:none
   }
@@ -231,8 +202,9 @@ export default {
     width: 100%;
   }
   .buttons {
-    justify-content: right;
+    justify-content: center;
     padding: 15px;
+    margin-top: 10px;
     display: flex;
     width: 100%;
   }

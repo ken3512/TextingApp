@@ -79,25 +79,26 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.add  {
+    .add  {
         padding: 10px;
         padding-bottom: 0px;
-        text-align: center;
+        text-align: left;
         background-color: #F8F1F1;
-        margin-bottom: 10px;
+        margin-bottom: 7px;
         margin-top: 5px;
-        height: 85%;
+        height: 290px;
+        border-radius: 5px;
         overflow-y:scroll;
     }
 
     .chat {
-        padding-top:1px;
+        padding: 5px;
         text-align: center;
         background-color: #243964;
         margin: auto;
         margin-top: 20px;
-        width: min(90%, 600px);
-        height: 600px;
+        width: 92%;
+        height: 380px;
         border-radius: 10px;
     }
 

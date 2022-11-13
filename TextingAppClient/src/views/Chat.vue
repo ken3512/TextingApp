@@ -20,6 +20,7 @@
                 </div>
         </div>
         <div class="messages">
+            <div class="sub">
             <div v-for="message in messages" >
                 <div v-if="message.user != user">
                 <a style="font-size: 12px;">{{ usertags[message.user] }}</a>
@@ -33,6 +34,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
             <input type='textfield' style="width: 70%;" name='message' v-model="message" required>
             <n-button style="margin-left: 10px;" size="tiny" @:click="sendMessage()" type="info">Send</n-button>
@@ -162,18 +164,32 @@ export default {
         background-color: #F8F1F1;
         margin-bottom: 7px;
         margin-top: 5px;
-        height: 85%;
+        height: 290px;
+        border-radius: 5px;
         overflow-y:scroll;
+        transform:rotateX(180deg);
+                -moz-transform:rotateX(180deg); /* Mozilla */
+                -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+                -ms-transform:rotateX(180deg); /* IE 9+ */
+                -o-transform:rotateX(180deg); /* Opera */
     }
 
+    .sub{
+   transform:rotateX(180deg);
+                -moz-transform:rotateX(180deg); /* Mozilla */
+                -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+                -ms-transform:rotateX(180deg); /* IE 9+ */
+                -o-transform:rotateX(180deg); /* Opera */
+}
+
     .chat {
-        padding-top:1px;
+        padding: 5px;
         text-align: center;
         background-color: #243964;
         margin: auto;
         margin-top: 20px;
-        width: min(90%, 600px);
-        height: 600px;
+        width: 92%;
+        height: 380px;
         border-radius: 10px;
     }
 

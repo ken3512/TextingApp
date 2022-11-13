@@ -52,14 +52,12 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.home{
+    .home{
         text-align: center;
         background-color: #F8F1F1;
         margin: auto;
-        margin-top: 20px;
-        width: min(90%, 600px);
-        height: 500px;
-        border-radius: 10px;
+        width: 90%;
+        height: 400px;
         overflow-y:scroll;
     }
 
