@@ -1,7 +1,7 @@
 <template>
     <div class="chat">
         <div style="display: flex; text-align: left; margin: 10px;">
-                <div style="background-color: black; width: fit-content">
+                <div style="width: fit-content">
                     <RouterLink style="margin-top: 10px;" class="no-underline" id="about" to="/"><n-button size="tiny" type="info" id="about-button">Back</n-button></RouterLink>
                 </div>
                 <div style=" width: fit-content; border-radius: 7px; margin-left: auto; margin-right: 0;">
